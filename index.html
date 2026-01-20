@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Server Rules — SVGE RP</title>
+  <meta name="description" content="SVGE RP RULES" />
+  <style>
+    :root{
+      --bg: #070A12;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.88);
+      --muted: rgba(255,255,255,.62);
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+
+      --a: #7C3AED;   /* purple */
+      --b: #22C55E;   /* green */
+      --c: #38BDF8;   /* sky */
+      --d: #F97316;   /* orange */
+      --e: #EF4444;   /* red */
+      --f: #FACC15;   /* yellow */
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1200px 800px at 20% -10%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(900px 700px at 110% 10%, rgba(56,189,248,.25), transparent 55%),
+        radial-gradient(900px 700px at 60% 110%, rgba(34,197,94,.18), transparent 60%),
+        linear-gradient(180deg, #050814 0%, #070A12 45%, #05060E 100%);
+      overflow-x:hidden;
+    }
+
+    a{color:inherit}
+    .wrap{max-width: 1080px; margin: 0 auto; padding: 28px 18px 90px;}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      position: sticky; top: 0;
+      padding: 14px 0;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(7,10,18,.92), rgba(7,10,18,.55));
+      z-index: 20;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+    }
+    .logo{
+      width: 40px; height: 40px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 50%),
+        linear-gradient(135deg, rgba(124,58,237,1), rgba(56,189,248,1));
+      border: 1px solid rgba(255,255,255,.18);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-60%;
+      background: conic-gradient(from 180deg, transparent, rgba(255,255,255,.18), transparent);
+      animation: spin 6s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .brand h1{font-size: 14px; margin:0; letter-spacing:.2px}
+    .brand p{font-size: 12px; margin:2px 0 0; color: var(--muted)}
+    .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .btn{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      text-decoration:none;
+      display:inline-flex; align-items:center; gap:8px;
+      box-shadow: var(--shadow);
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+      cursor:pointer;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.18)}
+    .btn:active{transform: translateY(0px) scale(.99)}
+    .btn svg{opacity:.9}
+
+    .hero{
+      margin-top: 18px;
+      padding: 26px 18px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 220px at 20% 0%, rgba(124,58,237,.20), transparent 60%),
+        radial-gradient(520px 220px at 80% 0%, rgba(56,189,248,.16), transparent 60%);
+      pointer-events:none;
+    }
+    .hero h2{
+      margin: 0 0 10px;
+      font-size: 28px;
+      letter-spacing: .2px;
+      position:relative;
+    }
+    .hero p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 70ch;
+      position:relative;
+    }
+
+    .badges{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 16px;
+      position:relative;
+    }
+    .badge{
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.78);
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .dot{width:8px; height:8px; border-radius:999px; display:inline-block}
+    .dot.p{background: var(--a)}
+    .dot.g{background: var(--b)}
+    .dot.s{background: var(--c)}
+    .dot.o{background: var(--d)}
+    .dot.r{background: var(--e)}
+    .dot.y{background: var(--f)}
+
+    .grid{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 16px;
+    }
+    @media (max-width: 960px){
+      .grid{grid-template-columns: 1fr}
+      .actions{justify-content:flex-start}
+    }
+
+    .card{
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .head{
+      padding: 16px 16px 12px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), transparent);
+    }
+    .card h3{
+      margin:0;
+      font-size: 15px;
+      letter-spacing:.2px;
+    }
+    .card .sub{
+      margin:6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.45;
+    }
+    .pill{
+      font-size: 11px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.78);
+      white-space:nowrap;
+      display:inline-flex; align-items:center; gap:7px;
+    }
+
+    details{
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 2px 0;
+    }
+    summary{
+      list-style:none;
+      cursor:pointer;
+      padding: 14px 16px;
+      display:flex; align-items:center; justify-content:space-between; gap: 14px;
+      user-select:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    .sum-left{display:flex; align-items:center; gap:10px; min-width:0}
+    .icon{
+      width: 34px; height: 34px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      display:grid; place-items:center;
+      flex: 0 0 auto;
+    }
+    .title{
+      min-width:0;
+    }
+    .title b{
+      display:block;
+      font-size: 14px;
+      letter-spacing:.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .title span{
+      display:block;
+      margin-top: 3px;
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .chev{
+      width: 32px; height: 32px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      display:grid; place-items:center;
+      transition: transform .2s ease;
+      flex: 0 0 auto;
+    }
+    details[open] .chev{transform: rotate(180deg)}
+    .content{
+      padding: 0 16px 16px;
+      color: rgba(255,255,255,.78);
+      line-height: 1.55;
+      font-size: 13px;
+    }
+    .content ul{margin: 10px 0 0; padding-left: 18px}
+    .content li{margin: 8px 0}
+    .content strong{color: rgba(255,255,255,.92)}
+    .callout{
+      margin-top: 12px;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.74);
+    }
+
+    .side{
+      padding: 16px;
+    }
+    .side h4{margin: 0 0 10px; font-size: 14px}
+    .side p{margin:0; color: var(--muted); font-size: 13px; line-height:1.55}
+    .list{
+      margin-top: 12px;
+      display:grid;
+      gap: 10px;
+    }
+    .mini{
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      padding: 12px;
+    }
+    .mini b{display:flex; align-items:center; gap:8px; font-size: 13px}
+    .mini span{display:block; color: var(--muted); margin-top: 6px; font-size: 12.5px; line-height:1.45}
+
+    .footer{
+      margin-top: 18px;
+      padding: 18px 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 22px;
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.60);
+      font-size: 12px;
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.74);
+    }
+
+    /* Print */
+    @media print{
+      body{background:#fff; color:#111}
+      .topbar{position:static; background:none; backdrop-filter:none}
+      .card,.hero,.footer,.brand,.btn{box-shadow:none}
+      .btn{display:none}
+      .wrap{padding:0}
+      .card,.hero,.footer{border-color:#ddd; background:#fff}
+      .content,.hero p,.sub,.side p,.mini span{color:#222}
+      .badge,.pill,.kbd{border-color:#ddd; background:#f6f6f6; color:#111}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="brand" aria-label="Server rules header">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>SVGE RP</h1>
+          <p>Semi-Serious Roleplay Ruleset</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn" href="#rules">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Jump to rules
+        </a>
+        <a class="btn" href="javascript:window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6v-7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Print / PDF
+        </a>
+      </div>
+    </div>
+
+    <section class="hero">
+      <h2>📜 Semi-Serious RP Rules</h2>
+      <p>
+        Our goal: <strong>immersive, enjoyable roleplay</strong> without turning the city into a courtroom.
+        Bring scenes, respect others, keep it fair, and don’t abuse systems.
+      </p>
+
+      <div class="badges" role="list" aria-label="Key highlights">
+        <div class="badge" role="listitem"><span class="dot p"></span> Semi-Serious RP</div>
+        <div class="badge" role="listitem"><span class="dot g"></span> Green Zones = Safe</div>
+        <div class="badge" role="listitem"><span class="dot y"></span> Scamming cap: <strong>250k</strong></div>
+        <div class="badge" role="listitem"><span class="dot r"></span> Zero-tolerance topics enforced</div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <!-- Main Rules -->
+      <main class="card" id="rules" aria-label="Server rules accordion">
+        <div class="head">
+          <div>
+            <h3>Rules Categories</h3>
+            <p class="sub">Click a section to expand. Keep roleplay fun, believable, and fair.</p>
+          </div>
+          <div class="pill" title="Tip">
+            <span class="dot s"></span>
+            Tip: use <span class="kbd">Ctrl</span> + <span class="kbd">F</span>
+          </div>
+        </div>
+
+        <details open>
+          <summary>
+            <div class="sum-left">
+              <div class="icon" aria-hidden="true">🟥</div>
+              <div class="title">
+                <b>General Conduct</b>
+                <span>Respect, community behaviour, staff decisions</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </summary>
+          <div class="content">
+            <ul>
+              <li><strong>Respect staff and players.</strong> Harassment, targeted abuse, or toxic behaviour isn’t welcome.</li>
+              <li><strong>Staff decisions are final.</strong> If you disagree, use the proper channels—don’t turn it into public drama.</li>
+              <li><strong>Semi-serious means:</strong> believable RP, but you can still have personality and fun—just don’t ruin scenes.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon" aria-hidden="true">🟧</div>
+              <div class="title">
+                <b>Roleplay Expectations</b>
+                <span>In-character, quality RP, NLR, realism balance</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </summary>
+          <div class="content">
+            <ul>
+              <li><strong>Stay in character</strong> during active scenes. Handle OOC issues outside roleplay.</li>
+              <li><strong>Quality RP:</strong> avoid power gaming, fail RP, fail fear, and anything wildly unrealistic.</li>
+              <li><strong>New Life Rule:</strong> after death, you don’t remember the events leading up to it.</li>
+              <li><strong>Injuries matter:</strong> react reasonably to damage, pain, and consequences.</li>
+            </ul>
+            <div class="callout">Semi-serious doesn’t mean “anything goes” — it means we keep it believable without being over-policed.</div>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon" aria-hidden="true">🟨</div>
+              <div class="title">
+                <b>Combat & Conflict</b>
+                <span>RDM/VDM, escalation, hostile RP, combat logging</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </summary>
+          <div class="content">
+            <ul>
+              <li><strong>No RDM:</strong> don’t kill/harm without proper roleplay initiation.</li>
+              <li><strong>No VDM:</strong> vehicles aren’t weapons unless clearly justified by RP.</li>
+              <li><strong>Escalation matters:</strong> hostile actions should follow a believable build-up and intent.</li>
+              <li><strong>No combat logging:</strong> don’t disconnect to dodge consequences.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon" aria-hidden="true">🟩</div>
+              <div class="title">
+                <b>Crime & Economy</b>
+                <span>Robberies, scamming cap, asset transfers, farming</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </summary>
+          <div class="content">
+            <ul>
+              <li><strong>Robberies</strong> must be roleplay-driven and give victims a fair chance to engage in the scene.</li>
+              <li><strong>Scamming is allowed up to <u>250k</u>.</strong> Scams must be believable and RP-focused.</li>
+              <li><strong>No mechanic abuse:</strong> exploitative or unrealistic “gotcha” scams are not allowed.</li>
+              <li><strong>No asset transfers</strong> to avoid consequences. Transfers must be legitimate and RP-justified.</li>
+              <li><strong>No paycheck/reward farming</strong> without RP intent.</li>
+            </ul>
+            <div class="callout"><strong>Scamming cap:</strong> 250k total value per scam. Anything above this is not permitted.</div>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon" aria-hidden="true">🟦</div>
+              <div class="title">
+                <b>Green Zones</b>
+                <span>Safe areas, no threats, no hostility</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </summary>
+          <div class="content">
+            <ul>
+              <li><strong>Green zones are safe areas.</strong> No violence, threats, or hostile actions.</li>
+              <li><strong>Disengage</strong> if you enter a green zone—don’t drag active conflict into it. Actively entering a green zone to avoid hostilitys will result in staff action </li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon" aria-hidden="true">🟪</div>
+              <div class="title">
+                <b>Emergency Services</b>
+                <span>Police/EMS professionalism and higher standards</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </summary>
+          <div class="content">
+            <ul>
+              <li><strong>Police/EMS must act professionally</strong> and maintain believable standards.</li>
+              <li><strong>No abuse of authority</strong> or unrealistic conduct in official roles.</li>
+              <li>These roles are held to a <strong>higher RP standard</strong>.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon" aria-hidden="true">🟫</div>
+              <div class="title">
+                <b>Communication & Identity</b>
+                <span>Mic required, voice ID, slurs and language</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </summary>
+          <div class="content">
+            <ul>
+              <li><strong>Working mic required.</strong> No mic, no play.</li>
+              <li><strong>Voice changers must fit character RP.</strong> Don’t use voice ID to exploit or bypass scenes.</li>
+              <li><strong>No slurs or hate speech</strong> anywhere: names, dialogue, “jokes”, or scenarios.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon" aria-hidden="true">🟥</div>
+              <div class="title">
+                <b>Cheating & Exploits</b>
+                <span>No third-party advantages, no bug abuse</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </summary>
+          <div class="content">
+            <ul>
+              <li><strong>No cheats, no exploits, no third-party software</strong> used to gain an advantage.</li>
+              <li><strong>No sky packs</strong> or unfair visual advantage packs.</li>
+              <li><strong>Report bugs.</strong> Don’t abuse them.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <div class="sum-left">
+              <div class="icon" aria-hidden="true">⛔</div>
+              <div class="title">
+                <b>Zero-Tolerance</b>
+                <span>Instantly actioned categories</span>
+              </div>
+            </div>
+            <div class="chev" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </summary>
+          <div class="content">
+            <ul>
+              <li>Pedophilia accusations, discussions, or threats</li>
+              <li>Real-life trading</li>
+              <li>Doxxing or real-life harassment</li>
+              <li>Threats toward the server or community</li>
+              <li>Cheating or exploiting</li>
+            </ul>
+          </div>
+        </details>
+
+      </main>
+
+      <!-- Sidebar -->
+      <aside class="card side" aria-label="Quick guide sidebar">
+        <h4>Quick Guide</h4>
+        <p>Copy/paste this page into your site, or drop it into a “Rules” route. It’s mobile-friendly and printable.</p>
+
+        <div class="list">
+          <div class="mini">
+            <b><span class="dot y"></span> Scamming Cap</b>
+            <span>Scamming is permitted up to <strong>250k</strong> total value per scam, and must be believable RP.</span>
+          </div>
+          <div class="mini">
+            <b><span class="dot g"></span> Green Zones</b>
+            <span>Safe areas. No violence, threats, or hostile actions. Disengage when entering.</span>
+          </div>
+          <div class="mini">
+            <b><span class="dot r"></span> Keep it Fair</b>
+            <span>No RDM/VDM, no combat logging, no mechanic abuse, and no third-party advantages.</span>
+          </div>
+          <div class="mini">
+            <b><span class="dot p"></span> Semi-Serious</b>
+            <span>Immersive and believable, without hardcore restrictions. Don’t ruin scenes.</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="footer" role="contentinfo">
+      <div>© SVGE RP • Rules may be updated at staff discretion.</div>
+      <div>Made by codebylevi</div>
+    </div>
+
+  </div>
+</body>
+</html>
